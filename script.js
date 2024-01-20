@@ -6,7 +6,7 @@ var numericCharacters = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 // function to confirm the user's password options
 function confirmPasswordPreferences() {
     // ask the user for password preferences (options)
-    var passwordLength = prompt(parseInt("How many characters would you like your password to contain?"));
+    var passwordLength = parseInt(prompt("How many characters would you like your password to contain?"));
     var confirmLowerCase = confirm("Click 'ok' to include lowercase characters");
     var confirmUpperCase = confirm("Click 'ok' to include uppercase characters");
     var confirmSpecialCharacters = confirm("Click 'ok' to include special characters");
@@ -62,12 +62,45 @@ function generatePassword() {
     // array to store gauranteed characters
     var gauranteedCharacters = [];
 
+    var result = [];
+
     // check if the user wants lowercase characters, if true then push character to potentialCharacters array
+    if(userPasswordPreferences.confirmLowerCase) {
+        potentialCharacters = potentialCharacters.concat(lowercaseCharacters);
+        gauranteedCharacters.push(getRandomCharacters(lowercaseCharacters));
+    }
     // check if the user wants uppercase characters, if true then push character to potentialCharacters array
+    if(userPasswordPreferences.confirmUpperCase) {
+        potentialCharacters = potentialCharacters.concat(uppercaseCharacters);
+        gauranteedCharacters.push(getRandomCharacters(uppercaseCharacters));
+    }
     // check if the user wants special characters, if true then push character to potentialCharacters array
+    if(userPasswordPreferences.confirmSpecialCharacters) {
+        potentialCharacters = potentialCharacters.concat(specialCharacters);
+        gauranteedCharacters.push(getRandomCharacters(specialCharacters));
+    }
     // check if the user wants numerical characters, if true then push character to potentialCharacters array
+    if(userPasswordPreferences.confirmNumericalCharacters) {
+        potentialCharacters = potentialCharacters.concat(numericCharacters);
+        gauranteedCharacters.push(getRandomCharacters(numericCharacters));
+    }
 
+    // For loop to iterate over the password length from the options object, selecting random indices from the array of possible characters and concatenating those characters into the result variable
+    for (var i = 0; i < userPasswordPreferences.length; i++) {
+    var possibleCharacter = getRandom(possibleCharacters);
 
+    result.push(possibleCharacter);
+  }
 
+    // Mix in at least one of each guaranteed character in the result
+    for (var i = 0; i < gauranteedCharacters.length; i++) {
+        result[i] = gauranteedCharacters[i];
+    }
+
+    // Transform the result into a string and pass into writePassword
+    alert(result);
+    console.log(result);
+    return result.join('');
 }
 
+generatePassword();
